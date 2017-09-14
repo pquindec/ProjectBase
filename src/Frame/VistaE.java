@@ -7,8 +7,15 @@ package Frame;
 
 import Metodo.IngDocente;
 import Metodo.IngEvidencia;
+import adm.Conexion;
 import adm.Evidencia;
 import adm.Tabla;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -28,10 +35,11 @@ public class VistaE extends javax.swing.JFrame {
     IngEvidencia dao;
     
     int clic_tabla = 0;
-    public VistaE() {
+    public VistaE() throws SQLException {
         initComponents();
         t.visualizar_Evidencia(tabla);  
         activa_boton(true,false,false);
+            CargarCed();
     }
     public void activa_boton(boolean a1, boolean a2, boolean a3){
         btnAgregar.setEnabled(a1);
@@ -41,19 +49,18 @@ public class VistaE extends javax.swing.JFrame {
     public void modificar(){
         dao = new IngEvidencia();
         Evidencia vo = new Evidencia();
-        
         vo.setCodigo(txtCodigo.getText());
         vo.setNombre(txtNombre.getText());
         vo.setEstado(txtEstado.getText());
         vo.setResolucion(txtReso.getText());
         vo.setTipo_Evidencia(txtTipo.getText());
+        vo.setCedula(txtCedula.getSelectedItem().toString());
         dao.Modificar(vo);
     }
 public void eliminar(){
         dao = new IngEvidencia();
         Evidencia vo = new Evidencia();
         vo.setCodigo(txtCodigo.getText());
-        
         dao.eliminar(vo);
     }
 public void agregar(){
@@ -64,6 +71,7 @@ public void agregar(){
         vo.setEstado(txtEstado.getText());
         vo.setResolucion(txtReso.getText());
         vo.setTipo_Evidencia(txtTipo.getText());
+        vo.setCedula(txtCedula.getSelectedItem().toString());
         dao.Guardar(vo);
     }
 
@@ -82,7 +90,6 @@ public void agregar(){
         jLabel1 = new javax.swing.JLabel();
         txtTipo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtCodigo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -92,8 +99,11 @@ public void agregar(){
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -124,12 +134,6 @@ public void agregar(){
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Nombre:");
-
-        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoActionPerformed(evt);
-            }
-        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Estado:");
@@ -179,6 +183,21 @@ public void agregar(){
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("cedula:");
+
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoActionPerformed(evt);
+            }
+        });
+
+        txtCedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCedulaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -202,19 +221,26 @@ public void agregar(){
                         .addGap(18, 18, 18)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtReso, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(333, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel6)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -244,10 +270,10 @@ public void agregar(){
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,10 +292,6 @@ public void agregar(){
     private void txtTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTipoActionPerformed
-
-    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
@@ -317,11 +339,13 @@ public void agregar(){
         String estado = ""+tabla.getValueAt(clic_tabla, 2);
         String reso = ""+tabla.getValueAt(clic_tabla, 3);
         String tipo = ""+tabla.getValueAt(clic_tabla, 4);
+        String ced = ""+tabla.getValueAt(clic_tabla, 5);
         txtCodigo.setText(codigo);
         txtNombre.setText(nombre);
         txtEstado.setText(estado);
         txtReso.setText(reso);
         txtTipo.setText(tipo);
+        txtCedula.addItem(ced);
         int column = tabla.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/tabla.getRowHeight();
         
@@ -346,6 +370,15 @@ public void agregar(){
 
         }
     }//GEN-LAST:event_tablaMouseClicked
+
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtCedulaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -373,15 +406,39 @@ public void agregar(){
             java.util.logging.Logger.getLogger(VistaE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VistaE().setVisible(true);
+                try {
+                    new VistaE().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(VistaE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         });
     }
+public void CargarCed() throws SQLException  {
+        Conexion conexion = new Conexion();
+        Connection cn = conexion.getConexion();
+        String sql = "SELECT * FROM Usuario";
 
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                txtCedula.addItem(rs.getString("txtCedula"));
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Problema con la consulta");
+        } finally {
+          
+                cn.close();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
@@ -391,9 +448,11 @@ public void agregar(){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panel;
     private javax.swing.JTable tabla;
+    private javax.swing.JComboBox<String> txtCedula;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtNombre;

@@ -5,6 +5,7 @@
  */
 package Metodo;
 
+import Frame.VistaE;
 import adm.Conexion;
 import adm.Docente;
 import adm.Evidencia;
@@ -32,13 +33,13 @@ public class IngEvidencia {
 
         try {
 
-            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,'Insertar')}");
-
+            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,?,'Insertar')}");
             cst.setString(1, objN.getCodigo());
             cst.setString(2, objN.getNombre());
             cst.setString(3, objN.getEstado());
             cst.setString(4, objN.getResolucion());
             cst.setString(5, objN.getTipo_Evidencia());
+            cst.setString(6, objN.getCedula());
             cst.execute();
             estado = true;
 
@@ -53,12 +54,13 @@ public class IngEvidencia {
 
         try {
 
-            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,'Actualizar')}");
+            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,?,'Actualizar')}");
             cst.setString(1, objN.getCodigo());
             cst.setString(2, objN.getNombre());
             cst.setString(3, objN.getEstado());
             cst.setString(4, objN.getResolucion());
             cst.setString(5, objN.getTipo_Evidencia());
+            cst.setString(6, objN.getCedula());
             cst.execute();
             estado = true;
 
@@ -67,14 +69,12 @@ public class IngEvidencia {
         }
         return estado;
     }
-    public boolean eliminar(Object obj ){
+ public boolean eliminar(Object obj ){
           Evidencia objN = (Evidencia) obj;
            boolean estado = false;
-        try {
-                     
+        try {       
           CallableStatement pst=cn.prepareCall("{Call TodosE(?,null,null,null,null,null,'Eliminar')}");
           pst.setString(1, objN.getCodigo());
-          
               pst.executeUpdate();
               estado = true;
         } catch (Exception e) {
@@ -98,6 +98,7 @@ public class IngEvidencia {
                 vo.setEstado(rs.getString("txtEstado"));
                 vo.setResolucion(rs.getString("txtResolucion"));
                 vo.setTipo_Evidencia(rs.getString("txtTipo_Evidencia"));
+                vo.setCedula(rs.getString("Fk_Cedula"));
                 list.add(vo);
             }
             }catch(SQLException ex){

@@ -45,8 +45,8 @@ FOREIGN KEY (txtId_Procesos_R)
 REFERENCES Proceso(txtCodigo)
 GO
 ALTER TABLE Evidencia
-ADD CONSTRAINT FK_Cedu_Usuario
-FOREIGN KEY (txtCodigo)
+ADD CONSTRAINT FK_Cedula
+FOREIGN KEY (FK_Cedula)
 REFERENCES Usuario(txtCedula)
 GO
 ALTER TABLE Evidencia
@@ -101,12 +101,13 @@ PRIMARY KEY (txtId_Perfil)
  PRIMARY KEY (txtCodigo)
  )
  GO
- CREATE TABLE Evidencia(
+Create TABLE Evidencia(
  txtCodigo varchar(10),
  txtNombre varchar(50),
  txtEstado varchar(100),
  txtResolucion varchar(250),
  txtTipo_Evidencia varchar(30),
+ FK_Cedula varchar(10),
  PRIMARY KEY (txtCodigo)
  )
  GO
@@ -149,40 +150,41 @@ GO
 GRANT CREATE PROC,EXECUTE,CREATE TABLE, CREATE ROLE, SELECT,INSERT,UPDATE,DELETE TO paul;
 --Vista
 GO
-CREATE VIEW vistaUsuario as 
-SELECT txtCedula,txtNombre,txtApellido,txtUsuario,txtContraseña,txtCorreo,txtTipo_Usuario FROM Usuario
+CREATE VIEW vistaUsuari as 
+SELECT txtCedula,txtNombre,txtApellido,txtUsuario,txtContraseña,txtCorreo,txtTipo_Usuario,txtSustentacion FROM Usuario
 GO
-Create View vistaEvidencia as
-Select txtCodigo,txtNombre,txtEstado,txtResolucion,txtTipo_Evidencia From Evidencia
+Alter View vistaEvidencia as
+Select txtCodigo,txtNombre,txtEstado,txtResolucion,txtTipo_Evidencia,Fk_Cedula From Evidencia
 GO
-Create Procedure TodosE(
+ALter Procedure TodosE(
 @txtCodigo varchar(10),
 @txtNombre varchar(50),
 @txtEstado varchar(100),
 @txtResolucion varchar(250),
 @txt_tipoEvidecia varchar(30),
+@Fk_Cedula varchar(10),
 @StatementType nvarchar(20) = '')
 as
 begin
 if @StatementType = 'Insertar'
 Begin
-insert into Evidencia(txtCodigo,txtNombre,txtEstado,txtResolucion,txtTipo_Evidencia)
-values(@txtCodigo,@txtNombre,@txtEstado,@txtResolucion,@txt_tipoEvidecia);
+insert into Evidencia(txtCodigo,txtNombre,txtEstado,txtResolucion,txtTipo_Evidencia,Fk_Cedula)
+values(@txtCodigo,@txtNombre,@txtEstado,@txtResolucion,@txt_tipoEvidecia,@Fk_Cedula);
 end
 IF @StatementType = 'Actualizar'  
 BEGIN  
 UPDATE Evidencia
 SET txtCodigo=@txtCodigo,txtNombre=@txtNombre,txtEstado=@txtEstado,
-txtResolucion=@txtResolucion,txtTipo_Evidencia=@txt_tipoEvidecia
+txtResolucion=@txtResolucion,txtTipo_Evidencia=@txt_tipoEvidecia,Fk_Cedula=@Fk_Cedula
 WHERE txtCodigo=@txtCodigo
 END
 Else IF @StatementType = 'Eliminar'  
 BEGIN
-DELETE FROM Evidencia WHERE @txtCodigo=@txtCodigo
+DELETE FROM Evidencia WHERE txtCodigo=@txtCodigo
 END;
 End
 GO
-Create PROCEDURE Todos  (  
+Create PROCEDURE TodosU  (  
 @txtCedula varchar(10),
 @txtNombre varchar(50),
 @txtApellido varchar(50),
@@ -190,14 +192,15 @@ Create PROCEDURE Todos  (
 @txtContraseña varchar(50),
 @txtCorreo varchar(50),
 @txtTipo_Usuario varchar(50),
+@txtSustentacion varchar(100),
 @StatementType nvarchar(20) = '')  
 AS  
 BEGIN  
 IF @StatementType = 'Insertar'  
 BEGIN  
 insert into Usuario (txtCedula, txtNombre, txtApellido, txtUsuario, txtContraseña, 
-		txtCorreo, txtTipo_Usuario) values (@txtCedula, @txtNombre, @txtApellido, @txtUsuario, @txtContraseña, 
-		@txtCorreo, @txtTipo_Usuario);
+		txtCorreo, txtTipo_Usuario, txtSustentacion) values (@txtCedula, @txtNombre, @txtApellido, @txtUsuario, @txtContraseña, 
+		@txtCorreo, @txtTipo_Usuario,@txtSustentacion);
 END  
 
 IF @StatementType = 'Actualizar'  
@@ -205,7 +208,7 @@ BEGIN
 UPDATE Usuario
 SET txtCedula=@txtCedula, txtNombre=@txtNombre , txtApellido=@txtApellido,
 txtUsuario=@txtUsuario, txtContraseña=@txtContraseña, txtCorreo=@txtCorreo,
-txtTipo_Usuario=@txtTipo_Usuario
+txtTipo_Usuario=@txtTipo_Usuario,txtSustentacion=@txtSustentacion
 WHERE txtCedula=@txtCedula 
 END  
 

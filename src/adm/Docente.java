@@ -12,11 +12,12 @@ public class Docente {
     String txtContraseña;
     String txtCorreo;
     String txtTipo_Usuario;
+    String txtSustentacion;
 
     public Docente() {
     }
 
-    public Docente(String txtCedula, String txtNombre, String txtApellido, String txtUsuario, String txtContraseña, String txtCorreo, String txtTipo_Usuario) {
+    public Docente(String txtCedula, String txtNombre, String txtApellido, String txtUsuario, String txtContraseña, String txtCorreo, String txtTipo_Usuario, String txtSustentacion) {
         this.txtCedula = txtCedula;
         this.txtNombre = txtNombre;
         this.txtApellido = txtApellido;
@@ -24,6 +25,7 @@ public class Docente {
         this.txtContraseña = txtContraseña;
         this.txtCorreo = txtCorreo;
         this.txtTipo_Usuario = txtTipo_Usuario;
+        this.txtSustentacion=txtSustentacion;
     }
     public String getTxtCedula() {
         return txtCedula;
@@ -79,6 +81,20 @@ public class Docente {
 
     public void setTxtTipo_Usuario(String txtTipo_Usuario) {
         this.txtTipo_Usuario = txtTipo_Usuario;
+    }
+
+    /**
+     * @return the txtSustentacion
+     */
+    public String getTxtSustentacion() {
+        return txtSustentacion;
+    }
+
+    /**
+     * @param txtSustentacion the txtSustentacion to set
+     */
+    public void setTxtSustentacion(String txtSustentacion) {
+        this.txtSustentacion = txtSustentacion;
     }
 
     

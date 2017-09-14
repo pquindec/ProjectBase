@@ -30,7 +30,7 @@ Conexion conexion = new Conexion();
 
         try {
 
-            cst = cn.prepareCall("{call Todos(?,?,?,?,?,?,?,'Insertar')}");
+            cst = cn.prepareCall("{call TodosU(?,?,?,?,?,?,?,?,'Insertar')}");
 
             cst.setString(1, objN.getTxtCedula());
             cst.setString(2, objN.getTxtNombre());
@@ -39,6 +39,7 @@ Conexion conexion = new Conexion();
             cst.setString(5, objN.getTxtContraseña());
             cst.setString(6, objN.getTxtCorreo());
             cst.setString(7, objN.getTxtTipo_Usuario());
+            cst.setString(8, objN.getTxtSustentacion());
             cst.execute();
             
 
@@ -53,7 +54,7 @@ Conexion conexion = new Conexion();
         ArrayList<Docente> list = new ArrayList<Docente>();
         Conexion conexion = new Conexion();
         Connection cn = conexion.getConexion();
-        String sql = "SELECT * FROM vistaUsuario;";
+        String sql = "SELECT * FROM vistaUsuari;";
         
          try{
             Statement st = cn.createStatement();
@@ -67,6 +68,7 @@ Conexion conexion = new Conexion();
                 vo.setTxtContraseña(rs.getString("txtContraseña"));
                 vo.setTxtCorreo(rs.getString("txtCorreo"));
                 vo.setTxtTipo_Usuario(rs.getString("txtTipo_Usuario"));
+                vo.setTxtSustentacion(rs.getString("txtSustentacion"));
                 list.add(vo);
             }
             }catch(SQLException ex){
@@ -85,7 +87,7 @@ public boolean eliminar(Object obj ){
            boolean estado = false;
         try {
                      
-          CallableStatement pst=cn.prepareCall("{Call Todos(?,null,null,null,null,null,null,'Eliminar')}");
+          CallableStatement pst=cn.prepareCall("{Call TodosU(?,null,null,null,null,null,null,null,'Eliminar')}");
           pst.setString(1, objN.getTxtCedula());
           
               pst.executeUpdate();
@@ -101,7 +103,7 @@ public boolean eliminar(Object obj ){
 
         try {
 
-            cst = cn.prepareCall("{call Todos(?,?,?,?,?,?,?,'Actualizar')}");
+            cst = cn.prepareCall("{call TodosU(?,?,?,?,?,?,?,?,'Actualizar')}");
 
             cst.setString(1, objN.getTxtCedula());
             cst.setString(2, objN.getTxtNombre());
@@ -110,6 +112,7 @@ public boolean eliminar(Object obj ){
             cst.setString(5, objN.getTxtContraseña());
             cst.setString(6, objN.getTxtCorreo());
             cst.setString(7, objN.getTxtTipo_Usuario());
+            cst.setString(8, objN.getTxtSustentacion());
             cst.execute();
 
             estado = true;
