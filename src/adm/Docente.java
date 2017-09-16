@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package adm;
 public class Docente {
     String txtCedula;
@@ -83,9 +79,7 @@ public class Docente {
         this.txtTipo_Usuario = txtTipo_Usuario;
     }
 
-    /**
-     * @return the txtSustentacion
-     */
+    
     public String getTxtSustentacion() {
         return txtSustentacion;
     }

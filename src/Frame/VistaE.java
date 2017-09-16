@@ -40,6 +40,7 @@ public class VistaE extends javax.swing.JFrame {
         t.visualizar_Evidencia(tabla);  
         activa_boton(true,false,false);
             CargarCed();
+            Cargarcodigo();
     }
     public void activa_boton(boolean a1, boolean a2, boolean a3){
         btnAgregar.setEnabled(a1);
@@ -55,6 +56,7 @@ public class VistaE extends javax.swing.JFrame {
         vo.setResolucion(txtReso.getText());
         vo.setTipo_Evidencia(txtTipo.getText());
         vo.setCedula(txtCedula.getSelectedItem().toString());
+        vo.setId_Codigo(txtIdCodigo.getSelectedItem().toString());
         dao.Modificar(vo);
     }
 public void eliminar(){
@@ -102,6 +104,8 @@ public void agregar(){
         jLabel6 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtCedula = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        txtIdCodigo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -198,6 +202,8 @@ public void agregar(){
             }
         });
 
+        jLabel7.setText("IdCodigo:");
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -221,15 +227,22 @@ public void agregar(){
                         .addGap(18, 18, 18)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtReso, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtReso, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(43, 43, 43)
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(panelLayout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtIdCodigo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(panelLayout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(109, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
@@ -244,7 +257,9 @@ public void agregar(){
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtIdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -340,12 +355,14 @@ public void agregar(){
         String reso = ""+tabla.getValueAt(clic_tabla, 3);
         String tipo = ""+tabla.getValueAt(clic_tabla, 4);
         String ced = ""+tabla.getValueAt(clic_tabla, 5);
+        String id = ""+tabla.getValueAt(clic_tabla, 6);
         txtCodigo.setText(codigo);
         txtNombre.setText(nombre);
         txtEstado.setText(estado);
         txtReso.setText(reso);
         txtTipo.setText(tipo);
         txtCedula.addItem(ced);
+        txtIdCodigo.addItem(id);
         int column = tabla.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY()/tabla.getRowHeight();
         
@@ -449,14 +466,36 @@ public void CargarCed() throws SQLException  {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panel;
     private javax.swing.JTable tabla;
     private javax.swing.JComboBox<String> txtCedula;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtEstado;
+    private javax.swing.JComboBox<String> txtIdCodigo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtReso;
     private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
+public void Cargarcodigo() throws SQLException  {
+        Conexion conexion = new Conexion();
+        Connection cn = conexion.getConexion();
+        String sql = "SELECT * FROM tCriterio";
+
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                txtIdCodigo.addItem(rs.getString("id_criterio"));
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Problema con la consulta");
+        } finally {
+          
+                cn.close();
+        }
+    }
 }

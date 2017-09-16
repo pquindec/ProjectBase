@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Metodo;
 
 import Frame.VistaE;
@@ -33,13 +29,14 @@ public class IngEvidencia {
 
         try {
 
-            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,?,'Insertar')}");
+            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,?,?,'Insertar')}");
             cst.setString(1, objN.getCodigo());
             cst.setString(2, objN.getNombre());
             cst.setString(3, objN.getEstado());
             cst.setString(4, objN.getResolucion());
             cst.setString(5, objN.getTipo_Evidencia());
             cst.setString(6, objN.getCedula());
+            cst.setString(7, objN.getId_Codigo());
             cst.execute();
             estado = true;
 
@@ -54,13 +51,14 @@ public class IngEvidencia {
 
         try {
 
-            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,?,'Actualizar')}");
+            cst = cn.prepareCall("{call TodosE(?,?,?,?,?,?,?,'Actualizar')}");
             cst.setString(1, objN.getCodigo());
             cst.setString(2, objN.getNombre());
             cst.setString(3, objN.getEstado());
             cst.setString(4, objN.getResolucion());
             cst.setString(5, objN.getTipo_Evidencia());
             cst.setString(6, objN.getCedula());
+            cst.setString(7, objN.getId_Codigo());
             cst.execute();
             estado = true;
 
@@ -73,7 +71,7 @@ public class IngEvidencia {
           Evidencia objN = (Evidencia) obj;
            boolean estado = false;
         try {       
-          CallableStatement pst=cn.prepareCall("{Call TodosE(?,null,null,null,null,null,'Eliminar')}");
+          CallableStatement pst=cn.prepareCall("{Call TodosE(?,null,null,null,null,null,null,'Eliminar')}");
           pst.setString(1, objN.getCodigo());
               pst.executeUpdate();
               estado = true;
@@ -99,6 +97,7 @@ public class IngEvidencia {
                 vo.setResolucion(rs.getString("txtResolucion"));
                 vo.setTipo_Evidencia(rs.getString("txtTipo_Evidencia"));
                 vo.setCedula(rs.getString("Fk_Cedula"));
+                vo.setId_Codigo(rs.getString("Fk_IdCriterio"));
                 list.add(vo);
             }
             }catch(SQLException ex){

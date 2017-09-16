@@ -6,13 +6,15 @@ public class Evidencia {
   String Resolucion;
   String Tipo_Evidencia;
  String Cedula;
-  public Evidencia(String Codigo, String Nombre, String Estado, String Resolucion, String Tipo_Evidencia,String Cedula) {
+  String Id_Codigo;
+  public Evidencia(String Codigo, String Nombre, String Estado, String Resolucion, String Tipo_Evidencia,String Cedula,String Id_Codigo) {
         this.Codigo = Codigo;
         this.Nombre = Nombre;
         this.Estado = Estado;
         this.Resolucion = Resolucion;
         this.Tipo_Evidencia = Tipo_Evidencia;
         this.Cedula=Cedula;
+        this.Id_Codigo=Id_Codigo;
     }
   public Evidencia() {
     }
@@ -68,5 +70,19 @@ public class Evidencia {
      */
     public void setCedula(String Cedula) {
         this.Cedula = Cedula;
+    }
+
+    /**
+     * @return the Id_Codigo
+     */
+    public String getId_Codigo() {
+        return Id_Codigo;
+    }
+
+    /**
+     * @param Id_Codigo the Id_Codigo to set
+     */
+    public void setId_Codigo(String Id_Codigo) {
+        this.Id_Codigo = Id_Codigo;
     }
 }
