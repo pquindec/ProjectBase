@@ -5,9 +5,12 @@
  */
 package Frame;
 
+import Metodo.IngCriterio;
 import Metodo.IngDocente;
+import adm.Criterio;
 import adm.Docente;
 import adm.Tabla;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -34,6 +37,12 @@ Tabla t = new Tabla();
         btnModificar.setEnabled(a2);
         btnEliminar.setEnabled(a3);
 }
+    void CargarCriterio(){
+         ArrayList<Criterio> criterios = new IngCriterio().Listar_Criterio();
+         for (Criterio criterio : criterios) {
+            
+        }
+    }
 public void modificar(){
         dao = new IngDocente();
         Docente vo = new Docente();
